@@ -1,98 +1,133 @@
-/* Custom Properties for Global Theme */
+/* --- Global Variables --- */
 :root {
-    --primary-blue: #2563eb;
-    --glass-white: rgba(255, 255, 255, 0.8);
-    --glass-border: rgba(255, 255, 255, 0.3);
-    --card-radius: 24px;
-    --anim-speed: 0.6s;
+    --primary-green: #22c55e;
+    --hover-green: #16a34a;
+    --text-dark: #1e293b;
+    --radius-lg: 20px;
+    --radius-md: 12px;
   }
   
+  /* --- Layout --- */
   .dashboard-wrapper {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px;
-    min-height: 100vh;
   }
   
-  /* Glassmorphism Header */
+  /* --- Header & Logout --- */
   .glass-nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Pushes Logout to the right */
     align-items: center;
-    padding: 20px 40px;
-    background: var(--glass-white);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    margin-bottom: 40px;
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-    animation: slideDown 0.8s ease;
+    margin-bottom: 30px;
   }
   
-  /* Advanced 4-Column Grid */
+  .logout-btn {
+    background-color: var(--primary-green) !important;
+    color: white !important;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* --- THE EXPANDED SEARCH BAR FIX --- */
+  .search-form {
+    display: flex !important;
+    width: 100% !important; /* Spans entire row */
+    gap: 10px;
+    margin-bottom: 50px;
+  }
+  
+  .search-form input {
+    flex: 1 !important;    /* FORCES expansion to fill all space */
+    padding: 15px 25px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid #e2e8f0;
+    font-size: 1.1rem;
+    min-width: 0;           /* Prevents shrinking */
+  }
+  
+  .search-form button {
+    background-color: var(--primary-green) !important;
+    color: white !important;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0 30px;
+    cursor: pointer;
+  }
+  
+  /* --- List Format Cards --- */
   .hotel-grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    display: flex;
+    flex-direction: column; /* List format */
+    gap: 20px;
   }
   
-  /* Animated Card Logic */
   .advanced-hotel-card {
     background: white;
-    border-radius: var(--card-radius);
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
+    padding: 20px 30px;
+    border-radius: var(--radius-lg);
+    display: flex;           /* Horizontal layout */
+    flex-direction: row !important; 
+    align-items: center;
+    gap: 25px;
     border: 1px solid #f1f5f9;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    animation: slideUp var(--anim-speed) ease-out backwards;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
   }
   
   .advanced-hotel-card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    border-color: var(--primary-blue);
+    transform: translateX(10px); /* List hover effect */
+    border-color: var(--primary-green);
   }
   
   .img-placeholder {
-    height: 160px;
-    background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
-    border-radius: 18px;
-    margin-bottom: 20px;
+    width: 80px;
+    height: 80px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
   }
   
+  .advanced-hotel-card h3 {
+    flex: 1; /* Pushes button to the right */
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  
+  /* --- Green Compare Button States --- */
   .compare-toggle {
-    margin-top: auto;
-    padding: 14px;
-    border-radius: 12px;
+    padding: 12px 24px;
+    border-radius: 10px;
     border: none;
     font-weight: 700;
     cursor: pointer;
     transition: 0.3s;
   }
   
-  .unselected { background: #f8fafc; color: #64748b; }
-  .selected { 
-    background: var(--primary-blue); 
-    color: white; 
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  .unselected {
+    background-color: var(--primary-green) !important;
+    color: white !important;
   }
   
-  /* KEYFRAMES */
-  @keyframes slideDown {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  .selected {
+    background-color: #15803d !important; /* Dark Green */
+    color: white !important;
   }
   
-  @keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  /* Comparison Section */
+  .comparison-section {
+    margin-top: 50px;
+    background: white;
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
   }
-  
-  /* Responsive Breakpoints */
-  @media (max-width: 1200px) { .hotel-grid-container { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 600px) { .hotel-grid-container { grid-template-columns: 1fr; } }

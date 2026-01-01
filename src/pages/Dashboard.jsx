@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 import { useHotels } from "../hooks/useHotels";
 import ComparisonChart from "../components/ComparisonChart";
-import "./Dashboard.css"; // Ensure standard CSS is imported
+import "./Dashboard.css"; 
 
 export default function Dashboard() {
   const [city, setCity] = useState("");
@@ -33,7 +33,7 @@ export default function Dashboard() {
     });
   };
 
-  // Mock data for chart generation
+  // Chart data mapping
   const chartData = compare.map((h) => ({
     name: h.name.slice(0, 10),
     price: Math.floor(Math.random() * 300) + 100,
@@ -42,42 +42,50 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-wrapper">
+      {/* Navigation with Logout in Top Right */}
       <nav className="glass-nav">
-        <h1 style={{ color: "var(--primary-blue)", margin: 0 }}>Hospitality Explorer</h1>
-        <button onClick={handleLogout} className="compare-toggle unselected" style={{ width: "auto" }}>
+        <h1>Hospitality Explorer</h1>
+        <button onClick={handleLogout} className="logout-btn">
           <LogOut size={18} /> Logout
         </button>
       </nav>
 
-      <form onSubmit={handleSearch} style={{ display: "flex", gap: "15px", marginBottom: "50px" }}>
+      {/* Expanded Search Bar Row */}
+      <form className="search-form" onSubmit={handleSearch}>
         <input
           maxLength="3"
           value={city}
           onChange={(e) => setCity(e.target.value.toUpperCase())}
-          placeholder="Enter City Code (NYC, LON...)"
-          style={{ flex: 1, padding: "15px", borderRadius: "12px", border: "1px solid #ddd" }}
+          placeholder="Enter City Code (NYC, LON, AMD...)"
         />
-        <button type="submit" className="selected compare-toggle" style={{ width: "120px" }}>
+        <button type="submit" className="search-btn">
           <Search size={20} />
         </button>
       </form>
 
-      <div className="hotel-grid-container">
+      {/* Hotel List Container */}
+      <div className="hotel-list-container">
+        {loading && <p style={{color: "white"}}>Loading hotels...</p>}
+        
         {hotels.map((hotel, index) => {
           const isSelected = compare.find((h) => h.hotelId === hotel.hotelId);
           return (
             <div 
               key={hotel.hotelId} 
               className="advanced-hotel-card"
-              style={{ animationDelay: `${index * 0.1}s` }} // Staggered Animation
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="img-placeholder">
-                <Hotel size={48} />
+                <Hotel size={40} color="#64748b" />
               </div>
-              <h3 style={{ marginBottom: "5px" }}>{hotel.name}</h3>
-              <p style={{ color: "#94a3b8", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "5px" }}>
-                <MapPin size={14} /> {hotel.iataCode || city}
-              </p>
+              
+              <div className="card-content">
+                <h3>{hotel.name}</h3>
+                <p className="location-tag">
+                  <MapPin size={14} /> {hotel.iataCode || city}
+                </p>
+              </div>
+
               <button 
                 className={`compare-toggle ${isSelected ? "selected" : "unselected"}`}
                 onClick={() => toggleCompare(hotel)}
@@ -89,15 +97,18 @@ export default function Dashboard() {
         })}
       </div>
 
+      {/* Comparison Section */}
       {compare.length > 0 && (
-        <div style={{ marginTop: "60px", padding: "40px", background: "white", borderRadius: "24px", boxShadow: "0 10px 30px rgba(0,0,0,0.05)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px" }}>
-            <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}><BarChart3 color="#2563eb" /> Comparison Insights</h2>
-            <button onClick={() => setCompare([])} style={{ border: "none", background: "none", color: "#ef4444", fontWeight: 700, cursor: "pointer" }}>
+        <div className="comparison-section">
+          <div className="comparison-header">
+            <h2>
+              <BarChart3 color="#22c55e" size={24} /> Comparison Insights
+            </h2>
+            <button onClick={() => setCompare([])} className="clear-button">
               <Trash2 size={16} /> Clear All
             </button>
           </div>
-          <div style={{ height: "400px" }}>
+          <div style={{ height: "400px", marginTop: "20px" }}>
             <ComparisonChart data={chartData} />
           </div>
         </div>
